@@ -1,4 +1,3 @@
-# Configure embedded ESXi
 provider "vsphere" {
   version        = "1.20.0"
   user           = "administrator@vsphere.local"
