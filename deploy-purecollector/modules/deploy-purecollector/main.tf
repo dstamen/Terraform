@@ -55,7 +55,7 @@ resource "vsphere_virtual_machine" "vmFromLocalOvf" {
 
   vapp {
     properties = {
-      "Authorization_Key" = "900a2814-f4e1-4fe9-bd16-3752c000e483",
+      "Authorization_Key" = "yourkeyhere",
       "DHCP" = "False",
       "IP_Address" = "192.168.1.8",
       "Netmask" = "255.255.255.0",
