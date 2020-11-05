@@ -3,26 +3,26 @@ provider "azurerm" {
 }
 
 data "azurerm_resource_group" "resourcegroup" {
-    name     = "FSA-team"
+    name     = "Azure-ResourceGroup"
 }
 
 data "azurerm_virtual_network" "virtualnetwork" {
-    name                = "FSA-LAB-USEAST"
+    name                = "Azure-VirtualNetwork"
     resource_group_name = data.azurerm_resource_group.resourcegroup.name
 }
 
 data "azurerm_subnet" "subnet" {
-    name                 = "FSA-USEAST1-MGMT"
+    name                 = "Azure-Subnet"
     resource_group_name  = data.azurerm_resource_group.resourcegroup.name
     virtual_network_name = data.azurerm_virtual_network.virtualnetwork.name
 }
 
 resource "azurerm_network_interface" "networkinterface" {
-    name                = "DS-TERRAFORM-Interface"
+    name                = "Azure-NetworkInterface"
     location            = data.azurerm_resource_group.resourcegroup.location
     resource_group_name = data.azurerm_resource_group.resourcegroup.name
     ip_configuration {
-        name = "DS-TERRAFORM-IP"
+        name = "Azure-IP"
         subnet_id = data.azurerm_subnet.subnet.id
         private_ip_address_allocation = "Dynamic"
     }
@@ -32,9 +32,9 @@ resource "azurerm_windows_virtual_machine" "avm" {
     name = "DS-TERRAFORM"
     resource_group_name = data.azurerm_resource_group.resourcegroup.name
     location = data.azurerm_resource_group.resourcegroup.location
-    computer_name = "DS-TERRAFORM"
+    computer_name = "hostname"
     admin_username = "terraform"
-    admin_password = "VMware1!"
+    admin_password = "Password1!"
     size = "Standard_B1s"
     network_interface_ids = [
         azurerm_network_interface.networkinterface.id,
@@ -51,21 +51,24 @@ resource "azurerm_windows_virtual_machine" "avm" {
     }
 }
 
-resource "azurerm_virtual_machine_extension" "configureiscsi" {
-    name                 = "configureiscsi"
+resource "azurerm_virtual_machine_extension" "customize" {
+    name                 = "customize"
     virtual_machine_id   = azurerm_windows_virtual_machine.avm.id
     publisher            = "Microsoft.Compute"
     type                 = "CustomScriptExtension"
     type_handler_version = "1.9"
     protected_settings = <<PROTECTED_SETTINGS
+
+    protected_settings = <<PROTECTED_SETTINGS
     {
-        "commandToExecute": "powershell.exe -Command \"./ConfigureAzureCBS.ps1; exit 0;\""
+        "commandToExecute": "powershell.exe -Command \"./chocolatey.ps1; exit 0;\""
     }
     PROTECTED_SETTINGS
+
     settings = <<SETTINGS
     {
         "fileUris": [
-            "https://gist.githubusercontent.com/dstamen/e021dcc181c30a9fc5af2d33deafff3f/raw/ae6673e7204df93178956bf7c17641b3be74f6c2/ConfigureAzureCBS.ps1"
+            "https://gist.githubusercontent.com/mcasperson/c815ac880df481418ff2e199ea1d0a46/raw/5d4fc583b28ecb27807d8ba90ec5f636387b00a3/chocolatey.ps1"
         ]
     }
     SETTINGS
