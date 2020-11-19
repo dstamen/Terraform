@@ -58,8 +58,6 @@ resource "azurerm_virtual_machine_extension" "customize" {
     type                 = "CustomScriptExtension"
     type_handler_version = "1.9"
     protected_settings = <<PROTECTED_SETTINGS
-
-    protected_settings = <<PROTECTED_SETTINGS
     {
         "commandToExecute": "powershell.exe -Command \"./chocolatey.ps1; exit 0;\""
     }
