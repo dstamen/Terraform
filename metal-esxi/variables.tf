@@ -49,5 +49,3 @@ variable "vc_install_path" {
 variable "vcenter_name" {
     type = string
 }
-
-
