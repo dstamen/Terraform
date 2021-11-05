@@ -15,7 +15,7 @@
             ],
             "thin_disk_mode": true,
             "deployment_option": "small",
-            "name": "${vcenter_name}"
+            "name": "${vc_name}"
         },
         "network": {
             "ip_family": "ipv4",

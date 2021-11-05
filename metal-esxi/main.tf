@@ -166,6 +166,7 @@ data "template_file" "vc_template" {
     first_esx_pass   = metal_device.esxi_hosts[0].root_password
     vcenter_network  = var.vcenter_portgroup_name
     first_esx_host   = metal_device.esxi_hosts[0].access_private_ipv4
+    vc_name          = var.vcenter_name
   }
 }
 
